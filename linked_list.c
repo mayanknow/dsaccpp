@@ -58,12 +58,85 @@ void display_recursive(struct Node *p)
 	}
 }
 
+// count the number of nodes in a linked list using loop
+void count_nodes(struct Node *p)
+{
+	int counter = 0;
+	while(p != NULL)
+	{
+		counter++;
+		p = p->next;
+	}
+
+	printf("%d\n", counter);
+}
+
+// count the number of nodes in a linked list using recursion
+int count_nodes_recursion(struct Node *p)
+{
+	if(p == NULL)
+	{
+		return 0;
+	} else {
+		return count_nodes_recursion(p->next) + 1;
+	}
+}
+
+// count the number of nodes in a linked list using recursion counter variable
+int count_nodes_recursion_single_variable(struct Node *p)
+{
+	int counter = 0;
+	if(p)
+	{
+		counter = count_nodes_recursion_single_variable(p->next);
+		return counter + 1;
+	} else {
+		return counter;
+	}
+
+}
+
+// sum of all elements in a linked list using loop
+void sum_LL(struct Node *p)
+{
+	// sum counter;
+	int sum = 0;
+
+	// while loop with continuation condition
+	while(p)
+	{
+		sum += p->data;
+		p = p->next;
+	}
+
+	printf("Sum is: %d\n", sum);
+}
+
+// sum of all elements in a linked list using recursion
+int sum_LL_recursion(struct Node *p)
+{
+	// termination condition
+	if(p == NULL)
+	{
+		return 0;
+	} else {
+		return p->data + sum_LL_recursion(p->next);
+	}
+}
+
+// find maximum number in the linke
+
 int main()
 {
 	int A[] = {3, 4, 6, 1, 7, 9};
 	create_node(A, 6);
-	display_linkedlist(first);
-	printf("Display recursively\n");
-	display_recursive(first);
+	// display_linkedlist(first);
+	// printf("Display recursively\n");
+	// display_recursive(first);
+	// count_nodes(first);
+	// printf("%d\n", count_nodes_recursion(first));
+	// printf("%d\n", count_nodes_recursion_single_variable(first));
+	// sum_LL(first);
+	printf("%d\n", sum_LL_recursion(first));
 	return 0;
 }
