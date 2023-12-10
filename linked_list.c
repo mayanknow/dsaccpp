@@ -264,10 +264,146 @@ void insert_last(struct Node *p, int x)
 
 }
 
+// insert elements in a sorted liked list
+void inser_sorted_LL(struct Node *p, int x)
+{
+	// create two pointers, one for node and one chasing pointer
+	// set pointer q to null
+	struct Node *t, *q = NULL;
+
+	// allocalte space for t
+	t = (struct Node *) malloc(sizeof(struct Node));
+
+	// add data to t and set t->next to NULL
+	t->data = x;
+	t->next = NULL;
+
+	// check if the list is empty
+	if(first == NULL) {
+		first = t;
+	} else {
+		// get pointer to reach x < data pointer value
+		while(p && p->data < x)
+		{
+			// use referencing fist and then move the pointer
+			q = p;
+			p = p->next;
+		}
+		//check if p is the first node
+		// the ** is used when only one node is present
+		// to add before the one node, t->next should be pointed at first addr
+		// and first should be pointed to t
+		if(p == first) {
+			t->next = first; // **
+			first = t;
+		} else {
+			t->next = q->next;
+			q->next = t;
+		}	
+	}
+}
+
+// deleting first node of a linked list
+void delete_first()
+{
+	// create a node * pointing to first node
+	struct Node *p = first;
+
+	//changing first node pointing to second node
+	first = first->next; // same as first = p->next as they both are same
+	printf("-----number deleted %d-------\n", p->data);
+	free(p);
+
+}
+
+void delete_nth_LL(struct Node *p, int loc)
+{
+	int counter = 0;
+	struct Node *q = NULL;
+	// make p pointer move till location
+	// make q pointer follow
+	if(loc == 0) {
+		printf("invalid location, element starts from 1\n");
+		return;
+	}
+	if(loc == 1) {
+		p = first;
+		first = first->next;
+		free(p);
+	} else {
+		if(loc > count_nodes(first)) {
+			printf("invalid location\n");
+			return;
+		}
+		while(p  && counter < loc-1)
+		{
+			//printf("%d", p->data);
+			q = p;
+			p = p->next;
+			counter++;
+		}
+		q->next = p->next;
+		free(p);
+	}
+}
+
+// check whether linked list is sorted or not
+int isLL_sorted(struct Node *p)
+{
+	if(count_nodes(first) < 2) {
+		printf("only one element present\n");
+		return 1;
+	}
+	// setting max as the least possbile integer
+	int min = INT32_MIN;
+	while(p)
+	{
+		// writing the failure condition instead of passing
+		// in sorted list p->data have to be greater than ">" min
+		// check opposite p->data < min
+		if(p->data < min) {
+			return 2;
+		}
+		// setting min as the value p->data has
+		min = p->data;
+		p = p->next;
+	}
+	// return 1 = sorted
+	// return 2 = not sorted
+	return 1;
+}
+
+void delete_duplicates_sortedLL()
+{
+	struct Node *p = first;
+	struct Node *q = first->next;
+
+	// check if list is sorted
+	if(isLL_sorted(first) != 1) {
+		printf("list is not sorted\n");
+		return;
+	}
+	// traverse thru the linked list
+	while(q != NULL)
+	{
+		if(q->data != p->data)
+		{
+			p = q;
+			q = q->next;
+		} else {
+			p->next = q->next;
+			free(q);
+			q = p->next;
+		}
+		
+	}
+}
+
+
 int main()
 {
-	int A[] = {};
-	create_node(A, 0);
+	int A[] = {1, 2, 2, 3, 9, 9};
+	create_node(A, 6);
 	// display_linkedlist(first);
 	// printf("Display recursively\n");
 	// display_recursive(first);
@@ -285,8 +421,23 @@ int main()
 	// display_one(search_LL_mvtohead(first, 7));
 	// printf("\n -----------------\n");
 	// display_linkedlist(first);
-	insert_last(first, 4);
-	insert_last(first, 11);
+	// display_linkedlist(first);
+	// tab();
+	// inser_sorted_LL(first, 4);
+	// inser_sorted_LL(first, 11);
+	// display_linkedlist(first);
+	// tab();
+	// inser_sorted_LL(first, 3);
+	// display_linkedlist(first);
+	// tab();
+	// display_linkedlist(first);
+	// tab();
+	// delete_nth_LL(first, 3);
+	// display_linkedlist(first);
+	// isLL_sorted(first);
+	display_linkedlist(first);
+	tab();
+	delete_duplicates_sortedLL();
 	display_linkedlist(first);
 	return 0;
 }
