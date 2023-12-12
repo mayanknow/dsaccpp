@@ -1,4 +1,4 @@
-# Data Structure and Algorithm in C/C++
+# Data Structures and Algorithms in C/C++
 This repo is incomplete and updated twice a week.
 All the progarms are well commented
 
