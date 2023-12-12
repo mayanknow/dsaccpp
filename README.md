@@ -5,5 +5,5 @@ All the progarms are well commented
 ### List
 1. Linked List **(currently doing)** 
 
-[!NOTE]
-Written in C only, C++ will be implemented later
+>[!NOTE]
+>Written in C only, C++ will be implemented later
