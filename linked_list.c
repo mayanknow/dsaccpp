@@ -9,7 +9,7 @@ struct Node
 {
 	int data;
 	struct Node *next;
-} *first;
+} *first, *second, *third;
 
 // miscellinous(adding tab)
 void tab()
@@ -28,6 +28,33 @@ void create_node(int A[], int n)
 	first->data = A[0];
 	first->next = NULL;
 	last = first;
+
+
+	// Loop to get data from the array
+	// Starting i = 1 as 0th element is already added
+	for(i = 1; i < n; i++)
+	{
+		// creating a declaring temporary node
+		t = (struct Node*) malloc(sizeof(struct Node));
+		// adding the data
+		t->data = A[i];
+		t->next = NULL;
+		last->next = t; // didn't get this line**
+		last = t; // pointing last towards t
+	}
+}
+
+// create_node second
+void create_node2(int A[], int n)
+{
+	int i; //for iterator
+	struct Node *t; // Temporary node pointer
+	struct Node *last; // Pointing to last node
+	// declaring first node
+	second = (struct Node*) malloc(sizeof(struct Node));
+	second->data = A[0];
+	second->next = NULL;
+	last = second;
 
 
 	// Loop to get data from the array
@@ -373,6 +400,7 @@ int isLL_sorted(struct Node *p)
 	return 1;
 }
 
+// delete all the elements in a sorted linked list
 void delete_duplicates_sortedLL()
 {
 	struct Node *p = first;
@@ -399,11 +427,156 @@ void delete_duplicates_sortedLL()
 	}
 }
 
+// reverse linked list
+// using array
+void reverseLL_array(struct Node *p)
+{
+	// creating an array in heap
+	// **** important ****
+	int *A;
+	A = (int *) malloc(sizeof(int)*count_nodes(first));
+	int i = 0;
+	// adding all the values in an array
+	while(p != NULL)
+	{
+		// adding p->data into the array
+		A[i] = p->data;
+		p = p->next;
+		i++;
+	}
+	// pointing p towards first node and decrement the i
+	// i got out of bounds
+	p = first;
+	i--;
+
+	// looping throught the array in reverse order
+	while(p != NULL)
+	{
+		// changing p->data from reverse array
+		p->data = A[i];
+		i--;
+		p = p->next;
+	}
+}
+
+// reverse linked list
+// sliding pointer
+void reverseLL_sliding_pointers()
+{
+	// get three pointers p, q and r
+	// set p and r to null
+	struct Node *p = first;
+	struct Node *q = NULL;
+	struct Node *r = NULL;
+
+	// looping through the linkedlist until null pointer
+	while(p != NULL)
+	{
+		// make the pointers follow each other r<-q<-p->next
+		r = q;
+		q = p;
+		p = p->next;
+		// linking the middle pointer to the last pointer addr eg. r<-q q->next = r
+		q->next = r;
+	}
+	first = q;
+}
+
+// reversing linked list using recusrion
+void reverseLL_recursion(struct Node *q, struct Node *p)
+{
+	if(p != NULL)
+	{
+		reverseLL_recursion(p, p->next);
+		// this will be executed returning time
+		p->next = q;
+	} else {
+		// point first towards q as list starts from here
+		first = q;
+	}
+}
+
+// concatinating linked list
+// getting params as list a, b
+void concatinationLL(struct Node *p, struct Node *q)
+{
+	// traversing node p till last
+	while(p->next != NULL)
+	{
+		p = p->next;
+	}
+	p->next = q;
+	q = NULL;
+}
+
+// merge two sorted linked list
+void merge2_sorted_LL(struct Node *f, struct Node *s)
+{
+	// first, second -> which is the comparison pointer
+	// third -> points towards the first node of sorted & merged list
+	// last -> points at last compared node and used for nullification
+
+	// declaring required pointers
+	struct Node *last;
+
+	//starting the list
+	// if second(s) data is bigger
+	if(f->data < s->data)
+	{
+		third = last = f;
+		f = f->next;
+		last->next = NULL;
+	} else {
+		// if first(f) data is bigger
+		third = last = s;
+		s = s->next;
+		last->next = NULL;
+	}
+
+	// looping and adding values untill one of first and last becames null
+	// any of first and last becomming null means one of the node is empty
+	while(f && s) {
+		if(f->data < s->data)
+		{
+			// joining last with f
+			last->next = f;
+			// making f as last
+			last = f;
+			// moving f to next node
+			f = f->next;
+			// make last next to null
+			last->next = NULL;
+		} else {
+			// joining last node to second
+			last->next = s;
+			// making second node as last
+			last = s;
+			// moving the last node a step
+			s = s->next;
+			// making last node poninting to null
+			last->next = NULL;
+		}
+	}
+	// one of the node must have been reached to the last pointer
+	
+	// if s has nulled(s == NULL)
+	if(f) {
+		// set the last node pointing to f
+		last->next = f;
+	}
+	// if f has nulled(f == NULL)
+	if(s) {
+		// set the last node pointing to s
+		last->next = s;
+	}
+}
 
 int main()
 {
-	int A[] = {1, 2, 2, 3, 9, 9};
-	create_node(A, 6);
+	int A[] = {1, 4, 6, 7};
+	int B[] = {2, 3, 5, 6};
+	create_node(A, 4);
+	create_node2(B, 4);
 	// display_linkedlist(first);
 	// printf("Display recursively\n");
 	// display_recursive(first);
@@ -435,9 +608,19 @@ int main()
 	// delete_nth_LL(first, 3);
 	// display_linkedlist(first);
 	// isLL_sorted(first);
+	// display_linkedlist(first);
+	// tab();
+	// delete_duplicates_sortedLL();
+	// display_linkedlist(first);
 	display_linkedlist(first);
 	tab();
-	delete_duplicates_sortedLL();
+	display_linkedlist(second);
+	tab();
+	merge2_sorted_LL(first, second);
 	display_linkedlist(first);
+	// tab();
+	// // reverseLL_array(first);
+	// reverseLL_recursion(NULL, first);
+	// display_linkedlist(first);
 	return 0;
 }
