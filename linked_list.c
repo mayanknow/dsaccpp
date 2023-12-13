@@ -571,12 +571,45 @@ void merge2_sorted_LL(struct Node *f, struct Node *s)
 	}
 }
 
+// check whether the list contanins loop or not
+void isLoop(struct Node *f)
+{
+	// make two pointer p and q pointing top first node
+	struct Node *p, *q;
+	
+	// making all point at the first node
+	p = q = f;
+
+	// make a do while loop here
+	// while condition until p and q are not null and not equal
+	do {
+		// move p one time and q two times
+		p = p->next;
+		q = q->next;
+
+		// add q moving statements twice and check if (n != NULL)
+		q = q ? q->next : q;
+	} while (p && q && p != q);
+
+	// if p and q gets equal
+	if(p == q)
+	{
+		printf("is loop\n");
+	} else {
+		printf("not loop\n");
+	}
+}
+
 int main()
 {
-	int A[] = {1, 4, 6, 7};
-	int B[] = {2, 3, 5, 6};
-	create_node(A, 4);
-	create_node2(B, 4);
+	struct Node *t1, *t2;
+	int A[] = {1, 4, 6, 7, 8, 9, 17};
+	create_node(A, 7);
+
+	// making a infinite linked list
+	// t1 = first->next->next;
+	// t2 = first->next->next->next->next->next;
+	// t2->next = t1;
 	// display_linkedlist(first);
 	// printf("Display recursively\n");
 	// display_recursive(first);
@@ -612,15 +645,16 @@ int main()
 	// tab();
 	// delete_duplicates_sortedLL();
 	// display_linkedlist(first);
-	display_linkedlist(first);
-	tab();
-	display_linkedlist(second);
-	tab();
-	merge2_sorted_LL(first, second);
-	display_linkedlist(first);
+	// display_linkedlist(first);
+	// tab();
+	// display_linkedlist(second);
+	// tab();
+	// merge2_sorted_LL(first, second);
+	// display_linkedlist(first);
 	// tab();
 	// // reverseLL_array(first);
 	// reverseLL_recursion(NULL, first);
 	// display_linkedlist(first);
+	isLoop(first);
 	return 0;
 }
