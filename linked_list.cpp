@@ -130,9 +130,10 @@ int main()
     int A[] = {1, 2, 4, 5, 6 };
     LinkedList l(A, 5);
 
-    l.Insert(2, 5);
-    l.Delete(5);
-    l.Display();
+    //l.Insert(2, 5);
+    std::cout << l.Length() << "\n";
+    //l.Delete(5);
+    //l.Display();
 
     return 0;
 }

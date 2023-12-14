@@ -1,3 +1,5 @@
+// this program explains recursive left and recursive right
+
 #include<stdio.h>
 #include<stdlib.h>
 
