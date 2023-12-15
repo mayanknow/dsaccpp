@@ -100,17 +100,71 @@ void insert_circular(int value, int pos)
         t->next = p->next;
         p->next = t;
     }
-    
-
-
-
 }
+
+// returns the length of a circular linked list
+int Length(struct Node *p)
+{
+    int counter = 0;
+    int flag = 0;
+    while(p != Head || flag == 0) {
+        flag = 1;
+        counter++;
+        p = p->next;
+    } 
+
+    return counter;
+}
+
+// delete a node from circular linked list
+int DeleteNode(struct Node *p, int pos) {
+    struct Node *q;
+    int i, x;
+
+    if(pos < 0 || pos > Length(Head)) {
+        return -1;  // -1 is returned when the index is invalid
+    }
+
+    // pos == 1
+    if(pos == 1)
+    {
+        // move p to the last element
+        while(p->next != Head) p = p->next;
+
+        // get the data to be deleted in x
+        x = Head->data;
+
+        // check if the head is the only node in this list
+        if(Head == p)
+        {
+            free(Head);
+            Head = NULL;
+        } else {
+            p->next = Head->next;
+            free(Head);
+            Head = p->next;
+        }
+    } else {
+        // if the index is not one
+        for(i = 0; i < pos-2; i++) {
+            p = p->next;
+        }
+        q = p->next;
+        p->next = q->next;
+        x = q->data;
+        free(q);
+    }
+    return x;
+}
+
 
 int main()
 {
     int A[] = {1, 2, 4, 6, 8};
     create_circular_LL(A, 5);
     insert_circular(9, 0);
+    Display(Head);
+    printf("%d\n", DeleteNode(Head, 11));
     Display(Head);
     return 0;
 }
