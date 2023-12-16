@@ -86,11 +86,51 @@ void InsertDll(struct Node *p, int index, int x)
 
 }
 
+// deleting a doubly linked list
+int DeleteDll(struct Node *p, int index)
+{
+    int x = -1, i;
+
+    if(index < 1 || index > LengthDll(p)) return -1;
+
+    if(index == 1) {
+        first = first->next;
+        if(first) first->prev = NULL;
+
+        x = p->data;
+        free(p);
+    } else {
+        for(i = 0; i < index-1; i++) p = p->next;
+        p->prev->next = p->next;
+        if(p->next) p->next->prev = p->prev;
+        x = p->data;
+        free(p);
+    }
+    return x;
+}
+
+// reversing a doubly linked list
+void ReverseDll(struct Node *p)
+{
+    struct Node *temp;
+
+    // traversing using loop
+    while(p != NULL) {
+        temp = p->next;
+        p->next = p->prev;
+        p->prev = temp;
+        p = p->prev;
+        if(p != NULL && p->next == NULL) {
+            first = p;
+        }
+    }
+}
+
 int main()
 {
     int A[] = {1, 2, 3, 4, 5};
     CreateDll(A, 5);
-    InsertDll(first, 0, 25);
+    ReverseDll(first);
     Display(first);
     return 0;
 }
