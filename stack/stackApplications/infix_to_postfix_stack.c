@@ -1,8 +1,19 @@
 /*
     infix to postfix using stack in c
+
+    STEPS:
+    1. init a stack
+    2. create a postfix array in heap with length l+1
+    3. create two interators i and j
+    4. **loop until theend start**
+    5. chck if the char is operant or not
+    6. if operant add to postfix array and increment both
+    7. else not operant check te precedence (op > stackTop) push and increment
+    8. else push to array and increment
 */
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 
 // stack struct
 struct Stack {
@@ -72,37 +83,72 @@ void Display()
     printf("\n");
 }
 
+// function to find precedence
+int pre(char x)
+{
+    if(x == '+' || x == '-') return 1;
+    else if(x == '*' || x == '/') return 2;
+    else return 0;
+}
 
-// int isBalanced(char *exp)
-// {
-//     int i;
+// function to return if the char is operand or not
+int isOperand(char x)
+{
+    if(x == '+' || x == '-' || x == '*' || x == '/') return 0;
+    else return 1;
+}
 
-//     for(i=0; exp[i] != '\0'; i++)
-//     {
-//         if(exp[i] == '('  || exp[i] == '[' || exp[i] == '{') {
-//             push(exp[i]);
-//         } else if(exp[i] == ')'  || exp[i] == ']' || exp[i] == '}') {
-//             if(top == NULL) {
-//                 return 0;
-//             }
-//             if(exp[i] == ')' && stackTop() == '(') { pop(); }
-//             else if(exp[i] == '}' && stackTop() == '{') { pop(); }
-//             else if(exp[i] == ']' && stackTop() == '[') { pop(); }
-//             else return 0;
-//         }
-//     }
+char* IntToPost(char *infix)
+{
+    int i = 0, j = 0;
+    char *postfix;
+    int len = strlen(infix);
+    
+    // array in heap to store postfix expression
+    postfix = (char *) malloc((len+2)*sizeof(char));
 
-//     return (top==NULL)?1:0;
-//     // is balanced 1
-//     // not balanced 0
-// }
+    while(infix[i] != '\0')
+    {
+        if(isOperand(infix[i])) {
+            // if letter
+            postfix[j++] = infix[i++];
+        } else {
+            // check the precedence
+            if(top == NULL || pre(infix[i]) > pre(stackTop())) {
+                // push in to stack
+                push(infix[i++]);
+            } else {
+                postfix[j++] = pop();
+            }
+        }
+    }
+    while(top != NULL)
+    {
+        postfix[j++] = pop();
+    }
+    postfix[j] = '\0';
+
+    return postfix;
+}
 
 int main()
 {
-    char *exp = "{([1+(5-3)]*11)}";
-
-    // printf("%s ", isBalanced(exp)?"Balanced":"Not balanced");
-    Display();
+    char *infix = "a+b*c-d/e";
+    char *postfix = IntToPost(infix);
+    printf("%s", postfix);
     
     return 0;
 }
+
+/*
+
+dryrun
+
+
+a + b * c      +- 1 div mul 2     
+postfix arr = abc*+
+st = +*
+
+
+
+*/
