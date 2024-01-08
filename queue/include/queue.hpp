@@ -18,6 +18,17 @@ public:
         this->size = size;
         Q = new int[this->size];
     }
+    Queue(char s, int size)
+    {
+        if(s == 'c')
+        {
+            front = rear = 0;
+            this->size = size;
+            Q = new int[this->size];
+        } else {
+            std::cout << "Wrong queue flag" << std::endl;
+        }
+    }
     void enqueue(int x);
     int dequeue();
     void Display();
